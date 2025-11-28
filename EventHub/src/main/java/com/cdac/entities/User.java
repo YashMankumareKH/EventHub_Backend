@@ -1,5 +1,5 @@
 package com.cdac.entities;
 
-public class User {
+public class U {
 
 }
