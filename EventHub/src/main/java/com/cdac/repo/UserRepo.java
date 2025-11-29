@@ -11,9 +11,10 @@ import com.cdac.entities.User;
 @Repository
 public interface UserRepo extends JpaRepository<User, Long>{
 	
+	Optional<User> findByEmailIdAndPassword(String emailId, String password);
+
+	boolean existsByEmailId(String emailId);
 	
-	Optional<User> findByEmailAndPassword(String em,String pass);
-	boolean existsByEmail(String email);
 	Optional<User> findUserByEmailId(String emailId);
 	
 }

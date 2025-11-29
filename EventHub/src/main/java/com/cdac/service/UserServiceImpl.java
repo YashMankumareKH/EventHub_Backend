@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public AuthResponse authenticate(AuthRequest dto) {
-		User user=userRepo.findByEmailAndPassword(dto.getEmail(), dto.getPassword()) //Optional<User>
+		User user=userRepo.findByEmailIdAndPassword(dto.getEmail(), dto.getPassword()) //Optional<User>
 				.orElseThrow(() -> new AuthenticationException("Invalid Email or password !!!!!!!"));
 		
 		AuthResponse respDTO = modelMapper.map(user, AuthResponse.class);
