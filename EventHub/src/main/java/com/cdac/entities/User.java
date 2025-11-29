@@ -1,9 +1,6 @@
 package com.cdac.entities;
 
-import java.beans.Transient;
-
-import org.springframework.boot.autoconfigure.condition.ConditionalOnCloudPlatform;
-
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,6 +13,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "user")
+@AttributeOverride(name = "id" , column = @Column(name = "user_id"))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -38,5 +36,19 @@ public class User extends BaseEntity {
 	private String address;
 	@Column(name = "is_active")
 	private boolean isActive;
+	public User(String firstName, String lastName, String emailId, String password, Long phone, UserRole role,
+			String address) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.emailId = emailId;
+		this.password = password;
+		this.phone = phone;
+		this.role = role;
+		this.address = address;
+		isActive=true;
+	}
+	
+	
 
 }
