@@ -2,12 +2,16 @@ package com.cdac.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cdac.custom_exception.AuthenticationException;
 import com.cdac.dto.AuthRequest;
 import com.cdac.dto.AuthResponse;
+import com.cdac.dto.UserRegistrationRequest;
+import com.cdac.dto.UserRegistrationResponse;
 import com.cdac.entities.User;
+import com.cdac.entities.UserRole;
 import com.cdac.repo.UserRepo;
 
 import jakarta.transaction.Transactional;
@@ -21,6 +25,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepo userRepo;
 	private final ModelMapper modelMapper;
+	
+	private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 
 	@Override
@@ -39,6 +45,41 @@ public class UserServiceImpl implements UserService {
 		AuthResponse respDTO = modelMapper.map(user, AuthResponse.class);
 		 respDTO.setMessage("Login Successful!");
 		return respDTO;
+	}
+
+
+	@Override
+	public UserRegistrationResponse registerUser(UserRegistrationRequest req) {
+		
+		 if (userRepo.existsByEmailId(req.getEmailId())) {
+	            throw new RuntimeException("Email already registered");
+	        }
+		 if (userRepo.existsByPhone(req.getPhone())) {
+		        throw new RuntimeException("Phone number already registered");
+		    }
+
+	        User user = new User();
+	        user.setFirstName(req.getFirstName());
+	        user.setLastName(req.getLastName());
+	        user.setEmailId(req.getEmailId());
+	        user.setPhone(req.getPhone());
+	        user.setAddress(req.getAddress());
+	        user.setRole(UserRole.valueOf(req.getRole().toUpperCase()));
+
+	        user.setPassword(passwordEncoder.encode(req.getPassword()));
+
+	        User saved = userRepo.save(user);
+
+	        UserRegistrationResponse resp = new UserRegistrationResponse();
+	        resp.setUserId(saved.getId());
+	        resp.setFirstName(saved.getFirstName());
+	        resp.setLastName(saved.getLastName());
+	        resp.setEmailId(saved.getEmailId());
+	        resp.setPhone(saved.getPhone());
+	        resp.setRole(saved.getRole().name());
+	        resp.setMessage("User registered successfully");
+
+	        return resp;
 	}
 
 }
