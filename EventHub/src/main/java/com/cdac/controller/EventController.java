@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -48,9 +49,9 @@ public class EventController {
 		
 		
 		//Create a new event (Manager only)
-		@PostMapping
-		public String addEvent(@RequestBody Eventdto event ){
-			return eventService.addEvent(event);
+		@PostMapping("/{managerId}")
+		public String addEvent(@PathVariable Long managerId,@RequestBody Eventdto event ){
+			return eventService.addEvent(managerId,event);
 		}
 		
 		
@@ -95,19 +96,13 @@ public class EventController {
 		
 		//- Cancel an event (only owner manager)
 		@PatchMapping("/{eventId}")
-		public String cancelEvent(@PathVariable Long eventId) {
+		public ResponseEntity<String> cancelEvent(@PathVariable Long eventId) {
 			
 			
-			return eventService.cancelEvent(eventId);
+			return ResponseEntity.ok(eventService.cancelEvent(eventId));
 		}
 		
 		
-		
-		
-		
-		
-		
-	    
 		
 		
 		

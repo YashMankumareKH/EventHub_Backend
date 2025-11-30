@@ -14,6 +14,8 @@ import com.cdac.dto.EventList;
 import com.cdac.dto.UserProfileDTO;
 import com.cdac.dto.UserRegistrationRequest;
 import com.cdac.dto.UserRegistrationResponse;
+import com.cdac.entities.EventStatus;
+import com.cdac.entities.RegStatus;
 import com.cdac.entities.User;
 import com.cdac.entities.UserRole;
 import com.cdac.repo.UserRepo;
@@ -121,13 +123,64 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<EventList> getUpcomingEvents(Long userId) {
-		User user = userRepo.findById(userId).orElseThrow();
-		
-		List<>
 		
 		
 		
-		return null;
+		return userRepo.findByEventsByUserIdAndStatus(userId, RegStatus.REGISTERED);
 	}
+
+
+	@Override
+	public List<EventList> getCompletedEvents(Long userId) {
+		
+		return userRepo.findByEventsByUserIdAndEventStatus(userId, RegStatus.REGISTERED, EventStatus.COMPLETED);
+	}
+
+
+	@Override
+	public List<User> getAllUser() {
+		List<User> user = userRepo.findAll();
+		return user;
+	}
+
+
+	@Override
+	public String deleteUser(Long userId) {
+		User user = userRepo.findById(userId).orElseThrow();
+		user.setActive(false);
+		return "User Deleted";
+	}
+
+
+	@Override
+	public String updateUser(User user) {
+		User dbuser = userRepo.findById(user.getId()).orElseThrow();
+		dbuser.setFirstName(user.getFirstName());
+		dbuser.setLastName(user.getLastName());
+		dbuser.setEmailId(user.getEmailId());
+		dbuser.setPhone(user.getPhone());
+		dbuser.setAddress(user.getAddress());
+		dbuser.setRole(user.getRole()); 
+        
+        return "User Updated";
+	}
+
+
+	@Override
+	public User getUserAllDetails(Long userId) {
+		User user = userRepo.findById(userId).orElseThrow();
+		return user;
+	}
+
+
+	@Override
+	public List<User> getAllManagers() {
+		List<User> managerList = userRepo.findByRole(UserRole.ROLE_MANAGER);
+		return managerList;
+	}
+	
+	
+	
+	
 
 }

@@ -8,19 +8,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cdac.dto.AuthRequest;
 import com.cdac.dto.EventList;
 import com.cdac.dto.UserProfileDTO;
-import com.cdac.repo.UserRepo;
 import com.cdac.dto.UserRegistrationRequest;
+import com.cdac.entities.EventRegistration;
+import com.cdac.entities.User;
+import com.cdac.service.EventService;
 import com.cdac.service.UserService;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/users")
@@ -28,10 +31,15 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	
-	
+
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private EventService eventService;
+
+
 
     
 	
@@ -72,6 +80,26 @@ public class UserController {
 		
 		return userService.getUpcomingEvents(userId);
 	}
+	
+	//List Completed events of user
+	@GetMapping("/{userId}/events/completed")
+	public List<EventList> getCompletedEvents(@PathVariable Long userId){
+		
+		return userService.getCompletedEvents(userId);
+	}
 
+	//Register For an Event
+	@PostMapping("/{userId}/events/{eventId}/register")
+	public String registerForEvent(@PathVariable Long userId,@PathVariable Long eventId ) {
+		
+		return eventService.registerForEvent(userId,eventId);
+	}
+	//Cancel Registration of event
+	@PatchMapping("/{userId}/events/{eventId}/register")
+	public String cancelRegistrationForEvent(@PathVariable Long userId,@PathVariable Long eventId ) {
+		
+		return eventService.cancelRegistrationForEvent(userId,eventId);
+	}
+	
+	
 }
-

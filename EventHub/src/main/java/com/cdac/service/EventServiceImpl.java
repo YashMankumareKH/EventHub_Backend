@@ -1,7 +1,6 @@
 package com.cdac.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -10,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdac.dto.EventList;
-import com.cdac.dto.RegisteredUserDto;
 import com.cdac.dto.Eventdto;
+import com.cdac.dto.RegisteredUserDto;
 import com.cdac.entities.Category;
 import com.cdac.entities.Event;
 import com.cdac.entities.EventRegistration;
@@ -49,14 +48,12 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public String addEvent(Eventdto eventdto) {
+	public String addEvent(Long managerId,Eventdto eventdto) {
 		
-		Category category = categoryRepo.findById(eventdto.getCategoryId()).orElseThrow();
-		
+		Category category = categoryRepo.findByName(eventdto.getCategoryName()).orElseThrow();
 		Event event = modelMapper.map(eventdto, Event.class);
-		
 		event.setCategory(category);
-		User user = userRepo.findById(7L).orElseThrow();
+		User user = userRepo.findById(managerId).orElseThrow();
 		event.setUserDetails(user);
 		eventRepository.save(event);
 		return "Event Added!!!";
@@ -127,6 +124,46 @@ public class EventServiceImpl implements EventService {
 		
 		return "Event Cancelled";
 	}
+
+	@Override
+	public String registerForEvent(Long userId, Long eventId) {
+		User user = userRepo.findById(userId).orElseThrow();
+		Event event = eventRepository.findById(eventId).orElseThrow();
+		EventRegistration registration = new EventRegistration();
+		registration.setUserDetails(user);
+		registration.setEvent(event);
+		registrationRepo.save(registration);
+		return "Registration Successfull";
+	}
+
+	@Override
+	public String cancelRegistrationForEvent(Long userId, Long eventId) {
+		User user = userRepo.findById(userId).orElseThrow();
+		Event event = eventRepository.findById(eventId).orElseThrow();
+		EventRegistration registration = registrationRepo.findByEventAndUserDetails(event, user);
+		registration.setStatus(RegStatus.CANCELLED);
+		
+		
+		return "Resistration Cacelled!!!";
+	}
+
+	@Override
+	public List<Event> getEvents() {
+		List<Event> eventList = eventRepository.findAll();
+		return eventList;
+	}
+
+	@Override
+	public List<Event> getAllEventsOfManager(Long managerId) {
+		List<Event> eventList = eventRepository.findByUserDetailsId(managerId);
+		return eventList;
+	}
+	
+	
+	
+	
+
+	
 
 	
 	
