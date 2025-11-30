@@ -1,7 +1,5 @@
 package com.cdac.entities;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
