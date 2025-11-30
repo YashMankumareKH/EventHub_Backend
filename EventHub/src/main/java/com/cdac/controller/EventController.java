@@ -91,7 +91,13 @@ public class EventController {
 			return eventService.cancelRegistrationOfUser(eventId,attendeeId);
 		}
 		
-		
+		//- Cancel an event (only owner manager)
+		@PatchMapping("/{eventId}")
+		public String cancelEvent(@PathVariable Long eventId) {
+			
+			
+			return eventService.cancelEvent(eventId);
+		}
 		
 		
 		

@@ -119,6 +119,14 @@ public class EventServiceImpl implements EventService {
 		return "Registration Cancelled";
 	}
 
+	@Override
+	public String cancelEvent(Long eventId) {
+		Event event = eventRepository.findById(eventId).orElseThrow();
+		event.setStatus(EventStatus.CANCELLED);
+		
+		return "Event Cancelled";
+	}
+
 	
 	
 }
