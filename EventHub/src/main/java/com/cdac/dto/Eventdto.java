@@ -20,7 +20,8 @@ public class Eventdto {
 	    private LocalDateTime endOn;
 	    private int capacity;
 	    private int price;
-	    private Long categoryId;
+	    private String categoryName;
+	    private Long managerId;
 	  
 
 }

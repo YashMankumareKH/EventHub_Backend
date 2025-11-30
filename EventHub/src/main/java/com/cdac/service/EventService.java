@@ -11,7 +11,7 @@ public interface EventService {
 		
 	List<EventList> getAllEvents();
 
-	String addEvent(Eventdto event); 
+	String addEvent(Long managerId, Eventdto event); 
 	
 	List<Eventdto> getUserEvents(Long id);
 
@@ -26,5 +26,13 @@ public interface EventService {
 	String cancelRegistrationOfUser(Long eventId, Long attendeeId);
 
 	String cancelEvent(Long eventId);
+
+	String registerForEvent(Long userId, Long eventId);
+
+	String cancelRegistrationForEvent(Long userId, Long eventId);
+
+	List<Event> getEvents();
+
+	List<Event> getAllEventsOfManager(Long managerId);
 	
 }
