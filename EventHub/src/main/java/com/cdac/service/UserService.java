@@ -13,6 +13,8 @@ public interface UserService {
 	
 
 	public User getUserByEmailId(String emailId);
+
+
 	AuthResponse authenticate(AuthRequest dto);
 	UserRegistrationResponse registerUser(UserRegistrationRequest req);
 }
