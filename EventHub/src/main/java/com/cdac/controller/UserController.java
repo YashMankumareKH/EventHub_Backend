@@ -1,5 +1,7 @@
 package com.cdac.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cdac.dto.AuthRequest;
+import com.cdac.dto.EventList;
 import com.cdac.dto.UserProfileDTO;
 import com.cdac.repo.UserRepo;
 import com.cdac.dto.UserRegistrationRequest;
@@ -41,11 +44,13 @@ public class UserController {
 			return ResponseEntity.ok(userService.authenticate(dto));
 	}
 	
+	//Get user profile (self or admin)
 	@GetMapping("/{userId}")
 	public UserProfileDTO getUserDetails(@PathVariable Long userId) {
 		return userService.getUserDetails(userId);
 	}
 	
+	//Update User Details
 	@PatchMapping("/{userId}")
 	public String updateUserDetails(@PathVariable Long userId,@RequestBody UserProfileDTO userProfileDTO) {
 		
@@ -54,13 +59,18 @@ public class UserController {
 	
 	
 	
-	
-	
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(
 	        @RequestBody @Valid UserRegistrationRequest req) {
 
 	    return ResponseEntity.ok(userService.registerUser(req));
+	}
+	
+	//List upcoming events of user 
+	@GetMapping("/{userId}/events/upcoming")
+	public List<EventList> getUpcomingEvents(@PathVariable Long userId){
+		
+		return userService.getUpcomingEvents(userId);
 	}
 
 }
