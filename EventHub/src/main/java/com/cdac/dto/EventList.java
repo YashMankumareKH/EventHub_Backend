@@ -17,5 +17,14 @@ public class EventList {
 	private String city;
 	private int price;
 	private LocalDateTime startOn;
+	public EventList(Long id, String title, String organization, String city, int price, LocalDateTime startOn) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.organization = organization;
+		this.city = city;
+		this.price = price;
+		this.startOn = startOn;
+	}
 
 }

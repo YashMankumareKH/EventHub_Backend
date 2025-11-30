@@ -1,5 +1,7 @@
 package com.cdac.service;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.cdac.custom_exception.AuthenticationException;
 import com.cdac.dto.AuthRequest;
 import com.cdac.dto.AuthResponse;
+import com.cdac.dto.EventList;
 import com.cdac.dto.UserProfileDTO;
 import com.cdac.dto.UserRegistrationRequest;
 import com.cdac.dto.UserRegistrationResponse;
@@ -103,10 +106,28 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String updateUserDetails(Long userId,UserProfileDTO userProfileDTO) {
-		User user = userR
+		User user = userRepo.findById(userId).orElseThrow();
 		
+		user.setFirstName(userProfileDTO.getFirstName());
+		user.setLastName(userProfileDTO.getLastName());
+		user.setEmailId(userProfileDTO.getEmailId());
+		user.setPassword(passwordEncoder.encode(userProfileDTO.getPassword()));
+		user.setPhone(userProfileDTO.getPhone());
+		user.setAddress(userProfileDTO.getAddress());
 		
 		return "Profile Updated";
+	}
+
+
+	@Override
+	public List<EventList> getUpcomingEvents(Long userId) {
+		User user = userRepo.findById(userId).orElseThrow();
+		
+		List<>
+		
+		
+		
+		return null;
 	}
 
 }
