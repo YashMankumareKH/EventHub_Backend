@@ -2,10 +2,23 @@ package com.cdac.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.*;
 
-import com.cdac.dto.EventRequestDTO;
-import com.cdac.dto.EventResponseDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cdac.dto.EventList;
+import com.cdac.dto.RegisteredUserDto;
+import com.cdac.dto.Eventdto;
+import com.cdac.entities.Event;
 import com.cdac.service.EventService;
 
 import lombok.RequiredArgsConstructor;
@@ -15,43 +28,81 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class EventController {
-
-    private final EventService eventService;
-
-    @GetMapping
-    public List<EventResponseDTO> getAllEvents() {
-        return eventService.getAllEvents();
-    }
-    @GetMapping("/{eventId}")
-    public EventResponseDTO getEventById(@PathVariable Long eventId) {
-        return eventService.getEventById(eventId);
-    }
-
-
-    @PostMapping("/add/{userId}")
-    public EventResponseDTO addEvent(
-            @PathVariable Long userId,
-            @RequestBody EventRequestDTO dto) {
-
-        return eventService.addEvent(userId, dto);
-    }
-
-  
-    @PutMapping("/{eventId}/update/{userId}")
-    public EventResponseDTO updateEvent(
-            @PathVariable Long eventId,
-            @PathVariable Long userId,
-            @RequestBody EventRequestDTO dto) {
-
-        return eventService.updateEvent(eventId, userId, dto);
-    }
-
-
-    @DeleteMapping("/{eventId}/delete/{userId}")
-    public String deleteEvent(
-            @PathVariable Long eventId,
-            @PathVariable Long userId) {
-
-        return eventService.deleteEvent(eventId, userId);
-    }
+		@Autowired
+		private  EventService eventService;
+		
+	
+		//List all published events (user) 
+		@GetMapping
+		public List<EventList> getAllEvents() {
+			System.out.println("Get all");
+			return eventService.getAllEvents();
+		}
+		
+		//Get event details
+		@GetMapping("/{id}")
+	    public Eventdto getEventById(@PathVariable Long id) {
+	    	
+	    	return eventService.getEventById(id);
+	    }
+		
+		
+		//Create a new event (Manager only)
+		@PostMapping
+		public String addEvent(@RequestBody Eventdto event ){
+			return eventService.addEvent(event);
+		}
+		
+		
+		//Update event (only owner manager)
+		@PutMapping
+		public String updateEventDetails(@RequestBody Eventdto eventdto ) {
+			
+			return eventService.updateEventDetails(eventdto);
+		}
+		
+		
+		//Get all Manager Events
+		@GetMapping("/manager/{managerId}")
+		public List<Eventdto> listManagerEvent(@RequestParam Long managerId){
+			
+			return eventService.getUserEvents(managerId);
+			
+		}
+		
+		//Delete Event (Manager)
+		@PatchMapping("/{eventId}/delete")
+		public String deleteEvent(@PathVariable Long eventId) {
+			
+			
+			return eventService.deleteEvent(eventId);
+		}
+		
+		
+		//Registrations of particular Event
+		@GetMapping("/{eventId}/attendees")
+		public List<RegisteredUserDto> getEventRegistrations(@PathVariable Long eventId) {
+			
+			return eventService.getEventRegistrations(eventId);
+		}
+		
+		//cancel registration of particular user(Manager)
+		@PatchMapping("/{eventId}/attendees/{attendeeId}")
+		public String cancelRegistrationOfUser(@PathVariable Long eventId,@PathVariable Long attendeeId ) {
+			
+			return eventService.cancelRegistrationOfUser(eventId,attendeeId);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	    
+		
+		
+		
 }

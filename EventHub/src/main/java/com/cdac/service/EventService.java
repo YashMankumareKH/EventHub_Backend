@@ -2,18 +2,27 @@ package com.cdac.service;
 
 import java.util.List;
 
-import com.cdac.dto.EventRequestDTO;
-import com.cdac.dto.EventResponseDTO;
+import com.cdac.dto.EventList;
+import com.cdac.dto.RegisteredUserDto;
+import com.cdac.dto.Eventdto;
+import com.cdac.entities.Event;
 
 public interface EventService {
+		
+	List<EventList> getAllEvents();
 
-    List<EventResponseDTO> getAllEvents();
+	String addEvent(Eventdto event); 
+	
+	List<Eventdto> getUserEvents(Long id);
 
-    EventResponseDTO getEventById(Long eventId);
+	Eventdto getEventById(Long id);
 
-    EventResponseDTO addEvent(Long userId, EventRequestDTO dto);
+	String updateEventDetails(Eventdto eventdto);
 
-    EventResponseDTO updateEvent(Long eventId, Long userId, EventRequestDTO dto);
+	String deleteEvent(Long id);
 
-    String deleteEvent(Long eventId, Long userId);
+	List<RegisteredUserDto> getEventRegistrations(Long eventId);
+
+	String cancelRegistrationOfUser(Long eventId, Long attendeeId);
+	
 }

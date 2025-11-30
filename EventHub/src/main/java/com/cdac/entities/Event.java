@@ -55,10 +55,10 @@ public class Event extends BaseEntity {
     private int price;
 
     @Enumerated(EnumType.STRING)
-    private EventStatus status;
+    private EventStatus status = EventStatus.PUBLISHED;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private boolean isActive = true;
 
     @ManyToOne
     @JoinColumn(name = "organizer_id", nullable = false)
