@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cdac.dto.AuthRequest;
+import com.cdac.dto.UserRegistrationRequest;
 import com.cdac.service.UserService;
 
 import jakarta.validation.Valid;
@@ -25,7 +26,14 @@ public class UserController {
 		
 		//invoke service layer method
 			return ResponseEntity.ok(userService.authenticate(dto));
-		
 	}
+	
+	@PostMapping("/signup")
+	public ResponseEntity<?> registerUser(
+	        @RequestBody @Valid UserRegistrationRequest req) {
+
+	    return ResponseEntity.ok(userService.registerUser(req));
+	}
+
 }
 
