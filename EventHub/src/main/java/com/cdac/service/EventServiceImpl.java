@@ -1,11 +1,13 @@
 package com.cdac.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cdac.dto.EventList;
 import com.cdac.dto.RegisteredUserDto;
@@ -21,7 +23,6 @@ import com.cdac.repo.EventRepository;
 import com.cdac.repo.RegistrationRepo;
 import com.cdac.repo.UserRepo;
 
-import jakarta.transaction.Transactional;
 @Service
 @Transactional
 

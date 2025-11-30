@@ -25,6 +25,7 @@ public class EventHubApplication {
 		.setPropertyCondition(Conditions.isNotNull());
 		return mapper;//Method rets configured ModelMapper bean to SC
 	}
+	
 
 }
 		

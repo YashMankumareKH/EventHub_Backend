@@ -2,6 +2,7 @@ package com.cdac.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +21,12 @@ import com.cdac.dto.Eventdto;
 import com.cdac.entities.Event;
 import com.cdac.service.EventService;
 
-//import lombok.RequiredArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/events")
 @CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
 public class EventController {
 		@Autowired
 		private  EventService eventService;
