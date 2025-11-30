@@ -24,5 +24,7 @@ public interface EventService {
 	List<RegisteredUserDto> getEventRegistrations(Long eventId);
 
 	String cancelRegistrationOfUser(Long eventId, Long attendeeId);
+
+	String cancelEvent(Long eventId);
 	
 }

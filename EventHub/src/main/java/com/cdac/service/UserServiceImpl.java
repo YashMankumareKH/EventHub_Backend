@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.cdac.custom_exception.AuthenticationException;
 import com.cdac.dto.AuthRequest;
 import com.cdac.dto.AuthResponse;
+import com.cdac.dto.UserProfileDTO;
 import com.cdac.dto.UserRegistrationRequest;
 import com.cdac.dto.UserRegistrationResponse;
 import com.cdac.entities.User;
@@ -89,6 +90,23 @@ public class UserServiceImpl implements UserService {
 	        resp.setMessage("User registered successfully");
 
 	        return resp;
+	}
+
+
+	@Override
+	public UserProfileDTO getUserDetails(Long userId) {
+		User user = userRepo.findById(userId).orElseThrow();
+		UserProfileDTO userProfileDTO = modelMapper.map(user, UserProfileDTO.class);
+		return userProfileDTO;
+	}
+
+
+	@Override
+	public String updateUserDetails(Long userId,UserProfileDTO userProfileDTO) {
+		User user = userR
+		
+		
+		return "Profile Updated";
 	}
 
 }
