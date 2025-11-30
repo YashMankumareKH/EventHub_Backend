@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EventList {
 	
+	private Long id;
 	private String title;
 	private String organization;
 	private String city;

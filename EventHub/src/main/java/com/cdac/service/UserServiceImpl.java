@@ -39,13 +39,22 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public AuthResponse authenticate(AuthRequest dto) {
-		User user=userRepo.findByEmailIdAndPassword(dto.getEmail(), dto.getPassword()) //Optional<User>
-				.orElseThrow(() -> new AuthenticationException("Invalid Email or password !!!!!!!"));
-		
-		AuthResponse respDTO = modelMapper.map(user, AuthResponse.class);
-		 respDTO.setMessage("Login Successful!");
-		return respDTO;
+
+	    User user = userRepo.findByEmailId(dto.getEmail())
+	            .orElseThrow(() -> new AuthenticationException("Invalid Email or password !!!!!!!!"));
+
+	    // Validate encrypted password
+	    if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+	        throw new AuthenticationException("Invalid Email or password !!!!!!!!");
+	    }
+
+	    // Prepare response
+	    AuthResponse resp = modelMapper.map(user, AuthResponse.class);
+	    resp.setMessage("Login Successful!");
+
+	    return resp;
 	}
+
 
 
 	@Override
