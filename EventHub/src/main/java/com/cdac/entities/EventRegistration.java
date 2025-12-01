@@ -24,7 +24,7 @@ import lombok.ToString;
 public class EventRegistration extends BaseEntity{
 	
 	@Enumerated(EnumType.STRING)
-	private RegStatus status;
+	private RegStatus status = RegStatus.REGISTERED ;
 	
 	@ManyToOne
     @JoinColumn(name = "event_id")
