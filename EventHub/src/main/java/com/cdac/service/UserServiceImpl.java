@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
 	public List<EventList> getUpcomingEvents(Long userId) {
 		User user = userRepo.findById(userId).orElseThrow();
 		
-		List<>
+//		List<>
 		
 		
 		

@@ -62,13 +62,20 @@ public class EventController {
 		}
 		
 		
-		//Get all Manager Events
+//		//Get all Manager Events
+//		@GetMapping("/manager/{managerId}")
+//		public List<Eventdto> listManagerEvent(@RequestParam Long managerId){
+//			
+//			return eventService.getUserEvents(managerId);
+//			
+//		}
+		
+		// Get all Manager Events
 		@GetMapping("/manager/{managerId}")
-		public List<Eventdto> listManagerEvent(@RequestParam Long managerId){
-			
-			return eventService.getUserEvents(managerId);
-			
+		public List<Eventdto> listManagerEvent(@PathVariable Long managerId) {
+		    return eventService.getUserEvents(managerId);
 		}
+
 		
 		//Delete Event (Manager)
 		@PatchMapping("/{eventId}/delete")
@@ -93,13 +100,7 @@ public class EventController {
 			return eventService.cancelRegistrationOfUser(eventId,attendeeId);
 		}
 		
-		//- Cancel an event (only owner manager)
-		@PatchMapping("/{eventId}")
-		public String cancelEvent(@PathVariable Long eventId) {
-			
-			
-			return eventService.cancelEvent(eventId);
-		}
+		
 		
 		
 		

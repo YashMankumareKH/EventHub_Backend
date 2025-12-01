@@ -23,17 +23,17 @@ public interface UserRepo extends JpaRepository<User, Long>{
 	
 	Optional<User> findUserByEmailId(String emailId);
 	
-//	(Long id, String title, String organization, String city, int price, LocalDateTime startOn)
-	@Query("""
-			SELECT new com.cdac.dto.EventList(
-	            e.id,e.title, e.organization, e.city, e.price , e.startOn)
-	        FROM EventRegistration r
-	        JOIN r.userDetails u
-	        JOIN r.event e
-	        WHERE r.userDetails.id = :userId
-	          AND r.status = :status
-	          AND r.user
-			
-			""")
+////	(Long id, String title, String organization, String city, int price, LocalDateTime startOn)
+//	@Query("""
+//			SELECT new com.cdac.dto.EventList(
+//	            e.id,e.title, e.organization, e.city, e.price , e.startOn)
+//	        FROM EventRegistration r
+//	        JOIN r.userDetails u
+//	        JOIN r.event e
+//	        WHERE r.userDetails.id = :userId
+//	          AND r.status = :status
+//	          AND r.user
+//			
+//			""");
 	
 }

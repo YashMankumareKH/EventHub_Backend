@@ -56,7 +56,7 @@ public class EventServiceImpl implements EventService {
 		Event event = modelMapper.map(eventdto, Event.class);
 		
 		event.setCategory(category);
-		User user = userRepo.findById(7L).orElseThrow();
+		User user = userRepo.findById(eventdto.getId()).orElseThrow();
 		event.setUserDetails(user);
 		eventRepository.save(event);
 		return "Event Added!!!";
