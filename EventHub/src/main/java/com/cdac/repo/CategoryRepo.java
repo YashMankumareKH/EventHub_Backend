@@ -10,5 +10,7 @@ import com.cdac.entities.User;
 public interface CategoryRepo extends JpaRepository<Category, Long> {
 
 	Optional<Category> findByName(String categoryName);
+
+	Optional<Category> findById(Category category);
 }
 

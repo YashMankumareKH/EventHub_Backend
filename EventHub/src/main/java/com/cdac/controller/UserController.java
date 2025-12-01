@@ -35,7 +35,7 @@ public class UserController {
 
 
     //List all published events (user) 
-    @GetMapping("/LlistEvents")
+    @GetMapping("/listEvents")
     public ResponseEntity<List<EventList>> getAllEvents() {
         System.out.println("Get all");
         List<EventList> events = eventService.getAllEvents();

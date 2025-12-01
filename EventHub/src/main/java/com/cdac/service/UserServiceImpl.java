@@ -123,8 +123,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<EventList> getUpcomingEvents(Long userId) {
-		
-		
+//
+//		User user = userRepo.findById(userId).orElseThrow();
 		
 		return userRepo.findByEventsByUserIdAndStatus(userId, RegStatus.REGISTERED);
 	}

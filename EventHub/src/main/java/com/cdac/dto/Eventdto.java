@@ -21,6 +21,7 @@ public class Eventdto {
 	    private int capacity;
 	    private int price;
 	    private String categoryName;
+	    private Long categoryId;
 	    private Long managerId;
 	  
 
