@@ -14,6 +14,7 @@ import lombok.Setter;
 		private Long id;
 		private String firstName;
 		private String lastName;
+		private String emailId; 
 		private UserRole role;
 		private String message;
 }

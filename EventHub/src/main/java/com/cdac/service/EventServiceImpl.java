@@ -53,7 +53,10 @@ public class EventServiceImpl implements EventService {
 		Category category = categoryRepo.findByName(eventdto.getCategoryName()).orElseThrow();
 		Event event = modelMapper.map(eventdto, Event.class);
 		event.setCategory(category);
+
+
 		User user = userRepo.findById(managerId).orElseThrow();
+
 		event.setUserDetails(user);
 		eventRepository.save(event);
 		return "Event Added!!!";
@@ -74,7 +77,9 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Eventdto getEventById(Long id) {
 		Event event = eventRepository.findById(id).orElseThrow();
+		Category category = categoryRepo.findById(event.getCategory().getId()).orElseThrow();
 		Eventdto eventDTO = modelMapper.map(event, Eventdto.class);
+		eventDTO.setCategoryName(category.getName());
 		return eventDTO;
 	}
 
