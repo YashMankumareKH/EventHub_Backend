@@ -1,4 +1,4 @@
-package com.cdac.custom_exception;
+package com.cdac.exception.custom;
 
 public class AuthenticationException extends RuntimeException {
 	public AuthenticationException(String mesg) {
