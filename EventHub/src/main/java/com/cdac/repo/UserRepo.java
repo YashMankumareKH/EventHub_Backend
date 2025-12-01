@@ -29,32 +29,10 @@ public interface UserRepo extends JpaRepository<User, Long>{
 	
 	Optional<User> findUserByEmailId(String emailId);
 	
-<<<<<<< HEAD
-////	(Long id, String title, String organization, String city, int price, LocalDateTime startOn)
-//	@Query("""
-//			SELECT new com.cdac.dto.EventList(
-//	            e.id,e.title, e.organization, e.city, e.price , e.startOn)
-//	        FROM EventRegistration r
-//	        JOIN r.userDetails u
-//	        JOIN r.event e
-//	        WHERE r.userDetails.id = :userId
-//	          AND r.status = :status
-//	          AND r.user
-//			
-//			""");
-=======
+
+
 //	(Long id, String title, String organization, String city, int price, LocalDateTime startOn)
-	@Query("""
-			SELECT new com.cdac.dto.EventList(
-	            e.id,e.title, e.organization, e.city, e.price , e.startOn)
-	        FROM EventRegistration r
-	        JOIN r.userDetails u
-	        JOIN r.event e
-	        WHERE r.userDetails.id = :userId
-	          AND r.status = :status
-	          
-			""")
-	List<EventList> findByEventsByUserIdAndStatus(@Param("userId") Long userId,@Param("status") RegStatus status );
+
 
 	
 	@Query("""
@@ -75,6 +53,6 @@ public interface UserRepo extends JpaRepository<User, Long>{
 	
 	
 	
->>>>>>> branch 'master' of https://github.com/YashMankumareKH/EventHub_Backend.git
+
 	
 }

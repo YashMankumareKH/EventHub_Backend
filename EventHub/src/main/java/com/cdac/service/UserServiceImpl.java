@@ -18,6 +18,7 @@ import com.cdac.entities.User;
 import com.cdac.entities.UserRole;
 import com.cdac.exception.custom.AuthenticationException;
 import com.cdac.exception.custom.DuplicateResourceException;
+import com.cdac.exception.custom.InternalErrorException;
 import com.cdac.exception.custom.InvalidActionException;
 import com.cdac.exception.custom.InvalidDataException;
 import com.cdac.exception.custom.NoDataFoundException;
@@ -134,7 +135,8 @@ public class UserServiceImpl implements UserService {
         }
 
         List<EventList> list =
-                userRepo.findByEventsByUserIdAndStatus(userId, RegStatus.REGISTERED);
+        		userRepo.findByEventsByUserIdAndEventStatus(
+                        userId, RegStatus.REGISTERED, EventStatus.PUBLISHED);
 
         if (list.isEmpty()) {
             throw new NoDataFoundException("No upcoming events found for user: " + userId);
@@ -180,12 +182,17 @@ public class UserServiceImpl implements UserService {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
 
-        if (!user.isActive()) {
-            throw new InvalidActionException("User already deleted or inactive: " + userId);
+        if (user.isActive()) {
+        	user.setActive(false);  
+        	return "User Deleted";
+        }
+        else if (!user.isActive()) {
+        	user.setActive(true);
+        	return "User Activated";
         }
 
-        user.setActive(false);
-        return "User Deleted";
+        throw new InternalErrorException("Unexpected error occurred");
+
     }
 
     @Override

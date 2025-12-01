@@ -56,7 +56,7 @@ public class ManagerController {
     // Delete Event (Manager)
     @PatchMapping("/event/{eventId}/delete")
     public ResponseEntity<String> deleteEvent(@PathVariable Long eventId) {
-        String result = eventService.deleteEvent(eventId);
+        String result = eventService.deleteManagerEvent(eventId);
         // If delete returns a message, OK is fine; alternatively you could use NO_CONTENT when no body is desired.
         return ResponseEntity.ok(result);
     }

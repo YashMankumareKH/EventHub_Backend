@@ -11,55 +11,95 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.cdac.exception.custom.AuthenticationException;
-import com.cdac.exception.custom.ResourceNotFoundException;
 import com.cdac.dto.ApiError;
+import com.cdac.exception.custom.AuthenticationException;
+import com.cdac.exception.custom.CategoryNotFoundException;
 import com.cdac.exception.custom.DuplicateResourceException;
+import com.cdac.exception.custom.EventNotFoundException;
+import com.cdac.exception.custom.InternalErrorException;
 import com.cdac.exception.custom.InvalidActionException;
-import com.cdac.exception.custom.UserNotFoundException;
 import com.cdac.exception.custom.InvalidDataException;
 import com.cdac.exception.custom.NoDataFoundException;
+import com.cdac.exception.custom.RegistrationNotFoundException;
+import com.cdac.exception.custom.ResourceNotFoundException;
+import com.cdac.exception.custom.UserNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-	
-	
-	   @ExceptionHandler(ResourceNotFoundException.class)
-	    public ResponseEntity<ApiError> handleNotFound(ResourceNotFoundException ex,HttpServletRequest req) {
-	        ApiError error = new ApiError(
-	        		HttpStatus.NOT_FOUND.value(),
-	                "Not Found",
-	                ex.getMessage(),
-	                LocalDateTime.now(),
-	                req.getRequestURI()
-	        );
 
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-	    }
-	
-	   @ExceptionHandler(NoDataFoundException.class)
-	   public ResponseEntity<ApiError> handleNoData(NoDataFoundException ex, HttpServletRequest req) {
-	       ApiError err = new ApiError(
-	               HttpStatus.NOT_FOUND.value(),
-	               "No Data Found",
-	               ex.getMessage(),
-	               LocalDateTime.now(),
-	               req.getRequestURI()
-	       );
-	       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
-	   }
+    // Generic resource not found (base)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiError> handleResourceNotFound(ResourceNotFoundException ex, HttpServletRequest req) {
+        ApiError error = new ApiError(
+                HttpStatus.NOT_FOUND.value(),
+                "Not Found",
+                ex.getMessage(),
+                LocalDateTime.now(),
+                req.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
 
+    // Specific: Event not found
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ApiError> handleEventNotFound(EventNotFoundException ex, HttpServletRequest req) {
+        ApiError err = new ApiError(
+                HttpStatus.NOT_FOUND.value(),
+                "Event Not Found",
+                ex.getMessage(),
+                LocalDateTime.now(),
+                req.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
 
-    // 404 - Resource not found
+    // Specific: Category not found
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ApiError> handleCategoryNotFound(CategoryNotFoundException ex, HttpServletRequest req) {
+        ApiError err = new ApiError(
+                HttpStatus.NOT_FOUND.value(),
+                "Category Not Found",
+                ex.getMessage(),
+                LocalDateTime.now(),
+                req.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    // Specific: Registration not found
+    @ExceptionHandler(RegistrationNotFoundException.class)
+    public ResponseEntity<ApiError> handleRegistrationNotFound(RegistrationNotFoundException ex, HttpServletRequest req) {
+        ApiError err = new ApiError(
+                HttpStatus.NOT_FOUND.value(),
+                "Registration Not Found",
+                ex.getMessage(),
+                LocalDateTime.now(),
+                req.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    // 404 - User not found
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiError> handleUserNotFound(UserNotFoundException ex, HttpServletRequest req) {
         ApiError err = new ApiError(
                 HttpStatus.NOT_FOUND.value(),
-                "Not Found",
+                "User Not Found",
+                ex.getMessage(),
+                LocalDateTime.now(),
+                req.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    // 404 - No data found (empty lists)
+    @ExceptionHandler(NoDataFoundException.class)
+    public ResponseEntity<ApiError> handleNoData(NoDataFoundException ex, HttpServletRequest req) {
+        ApiError err = new ApiError(
+                HttpStatus.NOT_FOUND.value(),
+                "No Data Found",
                 ex.getMessage(),
                 LocalDateTime.now(),
                 req.getRequestURI()
@@ -106,14 +146,27 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
+    // 500 - Internal server error (explicit)
+    @ExceptionHandler(InternalErrorException.class)
+    public ResponseEntity<ApiError> handleInternal(InternalErrorException ex, HttpServletRequest req) {
+        ApiError err = new ApiError(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Internal Server Error",
+                ex.getMessage(),
+                LocalDateTime.now(),
+                req.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
+    }
+
     // 400 - Validation errors from @Valid
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest req) {
         BindingResult br = ex.getBindingResult();
         String messages = br.getFieldErrors()
-                            .stream()
-                            .map(e -> e.getField() + ": " + e.getDefaultMessage())
-                            .collect(Collectors.joining("; "));
+                .stream()
+                .map(e -> e.getField() + ": " + e.getDefaultMessage())
+                .collect(Collectors.joining("; "));
 
         ApiError err = new ApiError(
                 HttpStatus.BAD_REQUEST.value(),

@@ -34,5 +34,7 @@ public interface EventService {
 	List<Event> getEvents();
 
 	List<Event> getAllEventsOfManager(Long managerId);
+
+	String deleteManagerEvent(Long eventId);
 	
 }
